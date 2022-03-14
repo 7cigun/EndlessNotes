@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">EndlessNotes</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title1">Акрил</string>
+    <string name="title2">Пастель</string>
+    <string name="title3">Пирография</string>
+    <string name="title4">Эпоксидка</string>
+    <string name="title5">Камень</string>
+    <string name="description1">Акриловые краски</string>
+    <string name="description2">Сухая пастель</string>
+    <string name="description3">Выжигание по дереву</string>
+    <string name="description4">Эпоксидная смола</string>
+    <string name="description5">Резьба по камню</string>
+
 </resources>
