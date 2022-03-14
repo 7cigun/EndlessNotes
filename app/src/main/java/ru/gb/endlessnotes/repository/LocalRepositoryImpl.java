@@ -8,13 +8,13 @@ import java.util.List;
 
 import ru.gb.endlessnotes.R;
 
-public class LocalRepositoryImpl implements CardSource {
+public class LocalRepositoryImpl implements NoteSource {
 
-    private List<CardData> dataSource;
+    private List<NoteData> dataSource;
     private Resources resources;
 
     public LocalRepositoryImpl(Resources resources){
-        dataSource = new ArrayList<CardData>();
+        dataSource = new ArrayList<NoteData>();
         this.resources = resources;
     }
 
@@ -24,7 +24,7 @@ public class LocalRepositoryImpl implements CardSource {
         TypedArray pictures = resources.obtainTypedArray(R.array.pictures);
 
         for (int i = 0; i < titles.length; i++) {
-            dataSource.add(new CardData(titles[i],descriptions[i], pictures.getResourceId(i,0),false));
+            dataSource.add(new NoteData(titles[i],descriptions[i], pictures.getResourceId(i,0),false));
         }
         return this;
     }
@@ -35,12 +35,12 @@ public class LocalRepositoryImpl implements CardSource {
     }
 
     @Override
-    public List<CardData> getAllCardData() {
+    public List<NoteData> getAllCardData() {
         return dataSource;
     }
 
     @Override
-    public CardData getCardData(int position) {
+    public NoteData getCardData(int position) {
         return dataSource.get(position);
     }
 }

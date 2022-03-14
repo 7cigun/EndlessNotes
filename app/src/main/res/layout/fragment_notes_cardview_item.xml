@@ -2,8 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:padding="5dp"
     app:cardCornerRadius="15dp"
-    app:cardElevation="3dp">
+    app:cardElevation="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,13 +25,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:orientation="horizontal">
 
-            <CheckBox
+            <ToggleButton
                 android:id="@+id/like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_favorite"
+                android:checked="false"
+                android:text=""
+                android:textOff=""
+                android:textOn=""/>
 
             <TextView
                 android:id="@+id/title"
@@ -45,6 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:text="Description"
             android:textSize="@dimen/textDescription" />
 

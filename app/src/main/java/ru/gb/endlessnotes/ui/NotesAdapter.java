@@ -3,20 +3,20 @@ package ru.gb.endlessnotes.ui;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.gb.endlessnotes.R;
-import ru.gb.endlessnotes.repository.CardData;
-import ru.gb.endlessnotes.repository.CardSource;
+import ru.gb.endlessnotes.repository.NoteData;
+import ru.gb.endlessnotes.repository.NoteSource;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
-    private CardSource cardSource;
+    private NoteSource noteSource;
 
     OnItemClickListener onItemClickListener;
 
@@ -24,13 +24,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setData(CardSource cardSource) {
-        this.cardSource = cardSource;
+    public void setData(NoteSource noteSource) {
+        this.noteSource = noteSource;
         notifyDataSetChanged();
     }
 
-    NotesAdapter(CardSource cardSource){
-        this.cardSource = cardSource;
+    NotesAdapter(NoteSource noteSource){
+        this.noteSource = noteSource;
     }
 
     NotesAdapter(){
@@ -45,27 +45,27 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     @Override
     public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
-        holder.bindContentWithLayout(cardSource.getCardData(position));
+        holder.bindContentWithLayout(noteSource.getCardData(position));
 
     }
 
     @Override
     public int getItemCount() {
-        return cardSource.size();
+        return noteSource.size();
     }
 
     class NotesViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewTitle;
         private TextView textViewDescription;
         private ImageView imageView;
-        private CheckBox checkBox;
+        private ToggleButton like;
 
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewTitle = (TextView) itemView.findViewById(R.id.title);
             textViewDescription = (TextView) itemView.findViewById(R.id.description);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
-            checkBox = (CheckBox) itemView.findViewById(R.id.like);
+            like = (ToggleButton) itemView.findViewById(R.id.like);
 
             /*textView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,11 +77,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             });*/
         }
 
-        public void bindContentWithLayout(CardData content) {
+        public void bindContentWithLayout(NoteData content) {
             textViewTitle.setText(content.getTitle());
             textViewDescription.setText(content.getDescription());
             imageView.setImageResource(content.getPicture());
-            checkBox.setChecked(content.isLike());
+            like.setChecked(content.isLike());
 
         }
     }
