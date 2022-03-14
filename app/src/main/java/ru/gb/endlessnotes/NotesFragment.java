@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-public class NotesFragment extends Fragment {
+public class NotesFragment extends Fragment implements OnItemClickListener{
 
     NotesAdapter notesAdapter;
 
@@ -38,6 +39,7 @@ public class NotesFragment extends Fragment {
     void initAdapter() {
         notesAdapter = new NotesAdapter();
         notesAdapter.setData(getData());
+        notesAdapter.setOnItemClickListener(this);
     }
 
     void initRecycler(View view) {
@@ -51,5 +53,11 @@ public class NotesFragment extends Fragment {
     String[] getData() {
         String[] data = getResources().getStringArray(R.array.titles);
         return data;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        String[] data = getData();
+        Toast.makeText(requireContext(), " Нажали на " + data[position], Toast.LENGTH_SHORT).show();
     }
 }
