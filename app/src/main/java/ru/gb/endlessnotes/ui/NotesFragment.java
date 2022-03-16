@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
 
     NotesAdapter notesAdapter;
     NotesSource data;
+    RecyclerView recyclerView;
 
     public static NotesFragment newInstance() {
         NotesFragment fragment = new NotesFragment();
@@ -59,6 +61,7 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
             case R.id.action_add: {
                 data.addNoteData(new NoteData("Новая заметка" + data.size(), "Текст новой заметки" + data.size(), R.drawable.acryl, false));
                 notesAdapter.notifyItemInserted(data.size() - 1);
+                recyclerView.smoothScrollToPosition(data.size() - 1);
                 return true;
             }
             case R.id.action_clear: {
@@ -102,11 +105,16 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
     }
 
     void initRecycler(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(notesAdapter);
+
+        DefaultItemAnimator animator = new DefaultItemAnimator();
+        animator.setChangeDuration(2500);
+        animator.setRemoveDuration(2500);
+        recyclerView.setItemAnimator(animator);
     }
 
     String[] getData() {
