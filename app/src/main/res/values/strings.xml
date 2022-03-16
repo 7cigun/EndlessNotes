@@ -13,4 +13,7 @@
     <string name="description4">Эпоксидная смола</string>
     <string name="description5">Резьба по камню</string>
 
+    <string name="add">Добавить</string>
+    <string name="clear">Очистить</string>
+
 </resources>

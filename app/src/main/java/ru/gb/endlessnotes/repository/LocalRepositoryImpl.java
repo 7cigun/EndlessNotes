@@ -8,7 +8,7 @@ import java.util.List;
 
 import ru.gb.endlessnotes.R;
 
-public class LocalRepositoryImpl implements NoteSource {
+public class LocalRepositoryImpl implements NotesSource {
 
     private List<NoteData> dataSource;
     private Resources resources;
@@ -35,12 +35,32 @@ public class LocalRepositoryImpl implements NoteSource {
     }
 
     @Override
-    public List<NoteData> getAllCardData() {
+    public List<NoteData> getAllNotesData() {
         return dataSource;
     }
 
     @Override
-    public NoteData getCardData(int position) {
+    public NoteData getNoteData(int position) {
         return dataSource.get(position);
+    }
+
+    @Override
+    public void clearNotesData() {
+        dataSource.clear();
+    }
+
+    @Override
+    public void addNoteData(NoteData noteData) {
+        dataSource.add(noteData);
+    }
+
+    @Override
+    public void deleteNoteData(int position) {
+        dataSource.remove(position);
+    }
+
+    @Override
+    public void updateNoteData(int position, NoteData newNoteData) {
+        dataSource.set(position, newNoteData);
     }
 }

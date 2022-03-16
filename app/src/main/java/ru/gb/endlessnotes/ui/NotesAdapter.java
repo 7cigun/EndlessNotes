@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ru.gb.endlessnotes.R;
 import ru.gb.endlessnotes.repository.NoteData;
-import ru.gb.endlessnotes.repository.NoteSource;
+import ru.gb.endlessnotes.repository.NotesSource;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
-    private NoteSource noteSource;
+    private NotesSource notesSource;
 
     OnItemClickListener onItemClickListener;
 
@@ -24,13 +24,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setData(NoteSource noteSource) {
-        this.noteSource = noteSource;
+    public void setData(NotesSource notesSource) {
+        this.notesSource = notesSource;
         notifyDataSetChanged();
     }
 
-    NotesAdapter(NoteSource noteSource){
-        this.noteSource = noteSource;
+    NotesAdapter(NotesSource notesSource){
+        this.notesSource = notesSource;
     }
 
     NotesAdapter(){
@@ -45,13 +45,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     @Override
     public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
-        holder.bindContentWithLayout(noteSource.getCardData(position));
+        holder.bindContentWithLayout(notesSource.getNoteData(position));
 
     }
 
     @Override
     public int getItemCount() {
-        return noteSource.size();
+        return notesSource.size();
     }
 
     class NotesViewHolder extends RecyclerView.ViewHolder {
