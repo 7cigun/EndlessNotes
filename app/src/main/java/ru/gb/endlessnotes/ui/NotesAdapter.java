@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.gb.endlessnotes.R;
@@ -19,6 +20,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     private NotesSource notesSource;
 
     OnItemClickListener onItemClickListener;
+
+    Fragment fragment;
+
+    private int menuPosition;
+
+    public int getMenuPosition() {
+        return menuPosition;
+    }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;
@@ -34,6 +43,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     }
 
     NotesAdapter(){
+    }
+
+    NotesAdapter(Fragment fragment){
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -55,10 +68,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     }
 
     class NotesViewHolder extends RecyclerView.ViewHolder {
-        private TextView textViewTitle;
-        private TextView textViewDescription;
-        private ImageView imageView;
-        private ToggleButton like;
+        private final TextView textViewTitle;
+        private final TextView textViewDescription;
+        private final ImageView imageView;
+        private final ToggleButton like;
 
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +79,24 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             textViewDescription = (TextView) itemView.findViewById(R.id.description);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             like = (ToggleButton) itemView.findViewById(R.id.like);
+
+            fragment.registerForContextMenu(itemView);
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    menuPosition = getLayoutPosition();
+                    return false;
+                }
+            });
+
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    menuPosition = getLayoutPosition();
+                    //view.showContextMenu();
+                    return false;
+                }
+            });
 
             /*textView.setOnClickListener(new View.OnClickListener() {
                 @Override
