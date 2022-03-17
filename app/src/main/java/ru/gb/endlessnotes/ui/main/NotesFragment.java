@@ -1,4 +1,4 @@
-package ru.gb.endlessnotes.ui;
+package ru.gb.endlessnotes.ui.main;
 
 import android.os.Bundle;
 
@@ -18,10 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 import ru.gb.endlessnotes.R;
+import ru.gb.endlessnotes.publisher.Observer;
 import ru.gb.endlessnotes.repository.LocalRepositoryImpl;
 import ru.gb.endlessnotes.repository.NoteData;
 import ru.gb.endlessnotes.repository.NotesSource;
+import ru.gb.endlessnotes.ui.MainActivity;
+import ru.gb.endlessnotes.ui.editor.NoteFragment;
 
 public class NotesFragment extends Fragment implements OnItemClickListener {
 
@@ -37,7 +42,6 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_notes, container, false);
     }
 
@@ -59,7 +63,7 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add: {
-                data.addNoteData(new NoteData("Новая заметка" + data.size(), "Текст новой заметки" + data.size(), R.drawable.acryl, false));
+                data.addNoteData(new NoteData("Новая заметка" + data.size(), "Текст новой заметки" + data.size(), R.drawable.acryl, false, Calendar.getInstance().getTime()));
                 notesAdapter.notifyItemInserted(data.size() - 1);
                 recyclerView.smoothScrollToPosition(data.size() - 1);
                 return true;
@@ -84,8 +88,16 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
         int menuPosition = notesAdapter.getMenuPosition();
         switch (item.getItemId()) {
             case R.id.action_update: {
-                data.updateNoteData(menuPosition, new NoteData("Обновленная заметка" + data.size(), "Текст обновленной заметки" + data.size(), data.getNoteData(menuPosition).getPicture(), false));
-                notesAdapter.notifyItemChanged(menuPosition);
+                Observer observer = new Observer() {
+                    @Override
+                    public void receiveMessage(NoteData noteData) {
+                        ((MainActivity) requireActivity()).getPublisher().unsubscribe(this);
+                        data.updateNoteData(menuPosition, noteData);
+                        notesAdapter.notifyItemChanged(menuPosition);
+                    }
+                };
+                ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
+                ((MainActivity) requireActivity()).getNavigation().addFragment(NoteFragment.newInstance(data.getNoteData(menuPosition)), true);
                 return true;
             }
             case R.id.action_delete: {
@@ -127,4 +139,5 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
         String[] data = getData();
         Toast.makeText(requireContext(), " Нажали на " + data[position], Toast.LENGTH_SHORT).show();
     }
+
 }

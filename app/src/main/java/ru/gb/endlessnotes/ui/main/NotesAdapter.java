@@ -1,4 +1,4 @@
-package ru.gb.endlessnotes.ui;
+package ru.gb.endlessnotes.ui.main;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,7 +110,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         public void bindContentWithLayout(NoteData content) {
             textViewTitle.setText(content.getTitle());
-            textViewDescription.setText(content.getDescription());
+            textViewDescription.setText(content.getDescription() + "" + content.getDate());
             imageView.setImageResource(content.getPicture());
             like.setChecked(content.isLike());
 
