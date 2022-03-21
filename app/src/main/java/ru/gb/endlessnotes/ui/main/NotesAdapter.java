@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import ru.gb.endlessnotes.R;
 import ru.gb.endlessnotes.repository.NoteData;
 import ru.gb.endlessnotes.repository.NotesSource;
@@ -98,19 +101,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                 }
             });
 
-            /*textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onItemClickListener != null){
-                        onItemClickListener.onItemClick(getLayoutPosition());
-                    }
-                }
-            });*/
-        }
+         }
 
         public void bindContentWithLayout(NoteData content) {
             textViewTitle.setText(content.getTitle());
-            textViewDescription.setText(content.getDescription() + "" + content.getDate());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy ", Locale.getDefault());
+            String noteDate = dateFormat.format(content.getDate());
+            textViewDescription.setText(content.getDescription() + " " + noteDate );
             imageView.setImageResource(content.getPicture());
             like.setChecked(content.isLike());
 
