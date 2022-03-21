@@ -1,5 +1,7 @@
 package ru.gb.endlessnotes.ui.main;
 
+import static ru.gb.endlessnotes.repository.LocalSharedPreferencesRepositoryImpl.KEY_SP_2;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import java.util.Calendar;
 import ru.gb.endlessnotes.R;
 import ru.gb.endlessnotes.publisher.Observer;
 import ru.gb.endlessnotes.repository.LocalRepositoryImpl;
+import ru.gb.endlessnotes.repository.LocalSharedPreferencesRepositoryImpl;
 import ru.gb.endlessnotes.repository.NoteData;
 import ru.gb.endlessnotes.repository.NotesSource;
 import ru.gb.endlessnotes.ui.MainActivity;
@@ -51,10 +54,27 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initAdapter();
+        setupSource();
         initRecycler(view);
         setHasOptionsMenu(true);
         initRadioGroup(view);
+    }
+
+    void setupSource(){
+        switch (getCurrentSource()) {
+            case SOURCE_ARRAY:
+                data = new LocalRepositoryImpl(requireContext().getResources()).init();
+                initAdapter();
+                break;
+            case SOURCE_SP:
+                data = new LocalSharedPreferencesRepositoryImpl(requireContext().getSharedPreferences(KEY_SP_2, Context.MODE_PRIVATE)).init();
+                initAdapter();
+                break;
+            case SOURCE_GF:
+                //data = new RemoteFireStoreRepositoryImpl(requireContext().getResources()).init();
+                initAdapter();
+                break;
+        }
     }
 
     private void initRadioGroup(View view) {
@@ -85,7 +105,6 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
             switch (view.getId()) {
                 case R.id.sourceArrays:
                     setCurrentSource(SOURCE_ARRAY);
@@ -97,6 +116,7 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
                     setCurrentSource(SOURCE_GF);
                     break;
             }
+            setupSource();
         }
     };
 
@@ -171,19 +191,9 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
     }
 
     void initAdapter() {
+        if (notesAdapter == null)
         notesAdapter = new NotesAdapter(this);
-        switch (getCurrentSource()) {
-            case SOURCE_ARRAY:
-                data = new LocalRepositoryImpl(requireContext().getResources()).init();
-                break;
-            case SOURCE_SP:
-                //data = new LocalSharedPreferencesRepositoryImpl(requireContext().getResources()).init();
-                break;
-            case SOURCE_GF:
-                //data = new FireStoreRepositoryImpl(requireContext().getResources()).init();
-                break;
-        }
-        data = new LocalRepositoryImpl(requireContext().getResources()).init();
+
         notesAdapter.setData(data);
         notesAdapter.setOnItemClickListener(this);
     }
