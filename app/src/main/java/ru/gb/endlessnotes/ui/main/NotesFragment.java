@@ -152,9 +152,19 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add: {
-                data.addNoteData(new NoteData("Новая заметка" + data.size(), "Текст новой заметки" + data.size(), PictureIndexConverter.getPictureByIndex(PictureIndexConverter.randomPictureIndex()), false, Calendar.getInstance().getTime()));
-                notesAdapter.notifyItemInserted(data.size() - 1);
-                recyclerView.smoothScrollToPosition(data.size() - 1);
+                Observer observer = new Observer() {
+                    @Override
+                    public void receiveMessage(NoteData noteData) {
+                        ((MainActivity) requireActivity()).getPublisher().unsubscribe(this);
+                        data.addNoteData(noteData);
+                        notesAdapter.notifyItemInserted(data.size() - 1);
+                        recyclerView.smoothScrollToPosition(data.size() - 1);
+                    }
+                };
+                ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
+                ((MainActivity) requireActivity()).getNavigation().addFragment(NoteFragment.newInstance(new NoteData("" + data.size(), "" + data.size(), PictureIndexConverter.getPictureByIndex(PictureIndexConverter.randomPictureIndex()), false, Calendar.getInstance().getTime())), true);
+                //data.addNoteData(new NoteData("Новая заметка" + data.size(), "Текст новой заметки" + data.size(), PictureIndexConverter.getPictureByIndex(PictureIndexConverter.randomPictureIndex()), false, Calendar.getInstance().getTime()));
+
                 return true;
             }
             case R.id.action_clear: {
