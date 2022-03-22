@@ -6,11 +6,20 @@ import android.os.Parcelable;
 import java.util.Date;
 
 public class NoteData implements Parcelable {
+    private String id;
     private String title;
     private String description;
     private int picture;
     private boolean like;
     private Date date;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public void setTitle(String title) {
         this.title = title;

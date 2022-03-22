@@ -29,8 +29,11 @@ import ru.gb.endlessnotes.R;
 import ru.gb.endlessnotes.publisher.Observer;
 import ru.gb.endlessnotes.repository.LocalRepositoryImpl;
 import ru.gb.endlessnotes.repository.LocalSharedPreferencesRepositoryImpl;
+import ru.gb.endlessnotes.repository.PictureIndexConverter;
+import ru.gb.endlessnotes.repository.RemoteFireStoreRepositoryImpl;
 import ru.gb.endlessnotes.repository.NoteData;
 import ru.gb.endlessnotes.repository.NotesSource;
+import ru.gb.endlessnotes.repository.RemoteFireStoreResponse;
 import ru.gb.endlessnotes.ui.MainActivity;
 import ru.gb.endlessnotes.ui.editor.NoteFragment;
 
@@ -71,7 +74,12 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
                 initAdapter();
                 break;
             case SOURCE_GF:
-                //data = new RemoteFireStoreRepositoryImpl(requireContext().getResources()).init();
+                data = new RemoteFireStoreRepositoryImpl().init(new RemoteFireStoreResponse() {
+                    @Override
+                    public void initialized(NotesSource notesSource) {
+                        initAdapter();
+                    }
+                });
                 initAdapter();
                 break;
         }
@@ -144,7 +152,7 @@ public class NotesFragment extends Fragment implements OnItemClickListener {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add: {
-                data.addNoteData(new NoteData("Новая заметка" + data.size(), "Текст новой заметки" + data.size(), R.drawable.acryl, false, Calendar.getInstance().getTime()));
+                data.addNoteData(new NoteData("Новая заметка" + data.size(), "Текст новой заметки" + data.size(), PictureIndexConverter.getPictureByIndex(PictureIndexConverter.randomPictureIndex()), false, Calendar.getInstance().getTime()));
                 notesAdapter.notifyItemInserted(data.size() - 1);
                 recyclerView.smoothScrollToPosition(data.size() - 1);
                 return true;

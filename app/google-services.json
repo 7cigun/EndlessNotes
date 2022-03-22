@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "412867913589",
+    "project_id": "endlessnotes-76530",
+    "storage_bucket": "endlessnotes-76530.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412867913589:android:faaa40acd174dc367f953c",
+        "android_client_info": {
+          "package_name": "ru.gb.endlessnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412867913589-o0hrgq39lppk87qa5fq1s3v7391trivq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWhOpEk4E-VlInbtCsVuiUdF0RLot-HAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412867913589-o0hrgq39lppk87qa5fq1s3v7391trivq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
